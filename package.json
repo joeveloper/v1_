@@ -1,0 +1,38 @@
+{
+  "name": "v1_",
+  "version": "1.0.0",
+  "description": "enterprise application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joeveloper/v1_.git"
+  },
+  "author": "Tolulope Odueke, Adeyinka Olatunji, Fakor",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/joeveloper/v1_/issues"
+  },
+  "homepage": "https://github.com/joeveloper/v1_#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.3",
+    "concurrently": "^4.1.0",
+    "express": "^4.16.4",
+    "is-empty": "^1.2.0",
+    "jsonwebtoken": "^8.4.0",
+    "mongoose": "^5.4.11",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
+    "path": "^0.12.7",
+    "validator": "^10.11.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.13.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.16.0",
+    "nodemon": "^1.18.10"
+  }
+}
