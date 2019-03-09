@@ -9,6 +9,7 @@ import models from '../models';
 
 // Load Input validation
 import validateRegisterInput from '../validation/register';
+import validateLoginInput from '../validation/login';
 
 // Load generator for subdomain names
 import createSubDomainName from '../utils/subDomainCreator';
@@ -21,7 +22,7 @@ const UserController = {
   /**
    * @route POST api/v1/users/
    * @desc Register a user
-   * @access Public
+   * @access public
    */
   registerUser(req, res) {
     const split = new Date().toString().split(' ');
@@ -126,6 +127,91 @@ const UserController = {
       .catch(err => {
         return res.status(500).json(err);
       });
+  },
+
+  /**
+   * @route POST api/v1/users/login
+   * @desc Login existing user/Return JWToken
+   * @access public
+   */
+  loginUser(req, res) {
+    // Validate input fields
+    const { errors, isValid } = validateLoginInput(req.body);
+
+    if (!isValid) {
+      return res.status(400).json(errors);
+    }
+
+    // Find user by email
+    User.findOne({ where: { email: req.body.email } }).then(user => {
+      if (!user) {
+        errors.email = 'User not found';
+        return res.status(404).json(errors);
+      }
+
+      // Check password
+      bcrypt.compare(req.body.password, user.password).then(isMatch => {
+        if (isMatch) {
+          const payload = {
+            id: user.id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            avatar: user.avatar,
+            email: user.email
+          };
+
+          // Sign Token
+          jwt.sign(payload, process.env.SECRET, { expiresIn: 3600 }, (err, token) => {
+            res.json({
+              success: true,
+              token: `Bearer ${token}`
+            });
+          });
+
+          User.update({ lastSeen: Date.now() }, { where: { id: user.id } });
+        } else {
+          errors.password = 'Password Incorrect';
+          res.status(400).json(errors);
+        }
+      });
+    });
+  },
+
+  /**
+   * @route GET api/v1/users/:id
+   * @desc Get a user by ID
+   * @access private
+   * @param id
+   */
+  getUserById(req, res) {
+    const { id } = req.params;
+    User.findOne({ where: { id } }).then(user => {
+      if (!user) {
+        return res.status(400).json({
+          success: false,
+          message: 'User does not exist'
+        });
+      }
+      return res.status(200).json({
+        sucess: true,
+        data: user
+      });
+    });
+    return User.update({ lastSeen: Date.now() }, { where: { id: req.user.id } });
+  },
+
+  /**
+   * @route GET api/v1/users/current
+   * @desc Get current signed in user profile
+   * @access private
+   */
+  getCurrentuser(req, res) {
+    return res.json({
+      id: req.user.id,
+      firstName: req.user.firstName,
+      lastName: req.user.lastName,
+      school: req.user.school
+    });
   }
 };
 
