@@ -21,7 +21,10 @@ const { User, HeadSchool, School, Feature } = models;
 const UserController = {
   /**
    * @route POST api/v1/users/
-   * @desc Register a user
+   * @description Register a user
+   * @param {Object} req - request
+   * @param {Object} res - response
+   * @returns status code & message
    * @access public
    */
   registerUser(req, res) {
@@ -131,7 +134,10 @@ const UserController = {
 
   /**
    * @route POST api/v1/users/login
-   * @desc Login existing user/Return JWToken
+   * @description Login existing user/Return JWToken
+   * @param {Object} req - request
+   * @param {Object} res - response
+   * @returns {Object} - status code and user payload
    * @access public
    */
   loginUser(req, res) {
@@ -179,9 +185,12 @@ const UserController = {
 
   /**
    * @route GET api/v1/users/:id
-   * @desc Get a user by ID
+   * @description Get a user by ID
+   * @param {Number} id - user id
+   * @param {Object} req - request
+   * @param {Object} res - response
+   * @returns {Object} - status code and user details
    * @access private
-   * @param id
    */
   getUserById(req, res) {
     const { id } = req.params;
@@ -202,7 +211,10 @@ const UserController = {
 
   /**
    * @route GET api/v1/users/current
-   * @desc Get current signed in user profile
+   * @description - Get current signed in user profile
+   * @param {Object} req - request
+   * @param {Object} res - response
+   * @returns {Object} - current user information
    * @access private
    */
   getCurrentuser(req, res) {
