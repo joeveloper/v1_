@@ -1,8 +1,10 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-
+import passport from 'passport';
 // Load custom sequelize configuration
 import { sequelize } from './models';
+// Load custom passport configuration
+import passportConfig from './config/passport';
 
 // Import app routes
 import userRoute from './routes/UserRoute';
@@ -29,6 +31,10 @@ app.use(
   })
 );
 app.use(bodyParser.json());
+// Passport middleware
+app.use(passport.initialize());
+
+passportConfig(passport);
 
 app.use(`${prefix}/users`, userRoute);
 
