@@ -4,9 +4,12 @@ import bodyParser from 'body-parser';
 // Load custom sequelize configuration
 import { sequelize } from './models';
 
-const app = express();
+// Import app routes
+import userRoute from './routes/UserRoute';
 
+const app = express();
 const PORT = process.env.PORT || 8080;
+const prefix = '/api/v1';
 
 /**
  * @route /home
@@ -26,6 +29,8 @@ app.use(
   })
 );
 app.use(bodyParser.json());
+
+app.use(`${prefix}/users`, userRoute);
 
 sequelize
   .sync()

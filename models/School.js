@@ -46,7 +46,19 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.STRING(255),
         allowNull: true
       },
+      schoolPhone_1: {
+        type: DataTypes.STRING(255),
+        allowNull: false
+      },
+      schoolPhone_2: {
+        type: DataTypes.STRING(255),
+        allowNull: true
+      },
       emailBalance: {
+        type: DataTypes.INTEGER(11),
+        allowNull: false
+      },
+      smsBalance: {
         type: DataTypes.INTEGER(11),
         allowNull: false
       },

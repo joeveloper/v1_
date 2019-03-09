@@ -13,6 +13,10 @@ export default (sequelize, DataTypes) => {
         allowNull: false,
         unique: true
       },
+      schoolPhone_1: {
+        type: DataTypes.STRING(255),
+        allowNull: false
+      },
       isActive: {
         type: DataTypes.INTEGER(1),
         allowNull: false

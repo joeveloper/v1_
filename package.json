@@ -4,7 +4,9 @@
   "description": "enterprise application",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --exec babel-node index.js",
+    "start": "npm run clean && mkdir uploads/avatars && nodemon --exec babel-node index.js",
+    "dev": "nodemon --exec babel-node index.js",
+    "clean": "rm -rf uploads && mkdir uploads",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -23,6 +25,7 @@
     "concurrently": "^4.1.0",
     "dotenv": "^6.2.0",
     "express": "^4.16.4",
+    "formidable": "^1.2.1",
     "is-empty": "^1.2.0",
     "jsonwebtoken": "^8.4.0",
     "mysql2": "^1.6.5",
