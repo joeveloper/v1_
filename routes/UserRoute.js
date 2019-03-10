@@ -11,6 +11,7 @@ router.get(
   passport.authenticate('jwt', { session: false }),
   UserController.getCurrentuser
 );
+router.put('/', passport.authenticate('jwt', { session: false }), UserController.editUser);
 router.get('/:id', passport.authenticate('jwt', { session: false }), UserController.getUserById);
 
 export default router;

@@ -10,6 +10,7 @@ import models from '../models';
 // Load Input validation
 import validateRegisterInput from '../validation/register';
 import validateLoginInput from '../validation/login';
+import validateEditUserInput from '../validation/editUser';
 
 // Load generator for subdomain names
 import createSubDomainName from '../utils/subDomainCreator';
@@ -224,6 +225,48 @@ const UserController = {
       lastName: req.user.lastName,
       school: req.user.school
     });
+  },
+
+  /**
+   * @route PUT api/v1/users/
+   * @description - User edit signed in profile
+   * @param {Object} req - request
+   * @param {Object} res - response
+   * @returns {Object} - Edited user information
+   * @access private
+   */
+  editUser(req, res) {
+    // Validate input fields
+    const { errors, isValid } = validateEditUserInput(req.body);
+    const hashedPassword = bcrypt.hashSync(req.body.newPassword, 8);
+
+    if (!isValid) {
+      return res.status(400).json(errors);
+    }
+
+    bcrypt.compare(req.body.oldPassword, req.user.password).then(isMatch => {
+      if (isMatch) {
+        User.update(
+          {
+            sex: req.body.sex,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            email: req.body.email,
+            password: hashedPassword
+          },
+          { where: { id: req.user.id } }
+        ).then(() => {
+          return res.json({
+            success: true,
+            message: 'Profile updated successfully'
+          });
+        });
+      } else {
+        errors.password = 'Password Incorrect';
+        res.status(400).json(errors);
+      }
+    });
+    return User.update({ lastSeen: Date.now() }, { where: { id: req.user.id } });
   }
 };
 
